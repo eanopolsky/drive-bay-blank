@@ -9,6 +9,20 @@ TODO: Measure hex nuts to determine whether 5.5mm is the width across flats or w
 TODO: Consider packing multiple blanks into each print.
 */
 
+/* Dimensional accuracy.
+ * When printed using PLA on a RepRap Prusa i3 from HIC, width 
+ * was set to 101.60 and height was set to 25. Actual width was 101.20
+ * and actual height was 25.06. The blank fit into the bay acceptably.
+ * 
+ * However, M3 nuts did not fit into the cutouts. Width across corners 
+ * for the cutouts was set to 6. Actual width across corners was around 5.
+ *
+ * Screw holes were also slightly too small. They were set to 3.30, but
+ * were actually around 3.0 in the printed part. This caused very minor
+ * binding on screw insertion, but not enough to justify changing the
+ * parameter at this time.
+ */
+
 //variables for part without holes
 thickness=5; //thickness of the walls of the blank
 depth=85+30+10; //depth of the blank into the PC case. 147mm per spec, but we can get away with less.
@@ -21,7 +35,7 @@ screwHoleCenterHeight=4.5; //distance between the center of each screw hole and 
  * the width across corners of a metrix hex nut is twice the
  * basic screw diameter.
  */
-hexNutWidth=6; //This variable contains the "width across corners" measurement.
+hexNutWidth=7; //This variable contains the "width across corners" measurement. Actually 6mm, but set to 7mm as they were too small.
 hexNutHeight=2;
 M3ScrewClearance=3.30;
 interiorHeight=screwHoleCenterHeight+(hexNutWidth/2*sin(60))*2+thickness; //distance between the top and bottom of the part inside the PC case
@@ -66,11 +80,28 @@ difference() {
 }
 }
 
+//One copy:
 partWithHoles();
 
+//Two copies:
+/*
+partWithHoles();
+translate([width+3*thickness,depth+3*thickness,0]) rotate([0,0,180]) partWithHoles(); 
+*/
 
-//A second copy to double the time between human intervention.
-//translate([width+3*thickness,depth+3*thickness,0]) rotate([0,0,180]) partWithHoles(); 
+//Three copies:
+/*
+translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
+translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
+translate([depth+thickness*4,thickness*4,0]) rotate([0,0,90]) partWithHoles();
+*/
 
+//Four copies:
+/*
+translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
+translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
+translate([depth+thickness*4,thickness*4,0]) rotate([0,0,90]) partWithHoles();
+translate([depth+thickness*4,thickness*4+width+thickness,0]) rotate([0,0,90]) partWithHoles();
+*/
 //Prusa i3 build area.
 //color("blue") square([200,200]);
