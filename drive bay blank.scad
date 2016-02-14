@@ -4,9 +4,6 @@
 
 All dimensions are in mm.
 TODO: Alter dimensions to compensate for shrinkage.
-TODO: Consider adding mouse ears if necessary to prevent warping.
-TODO: Measure hex nuts to determine whether 5.5mm is the width across flats or width across corners.
-TODO: Consider packing multiple blanks into each print.
 */
 
 /* Dimensional accuracy.
