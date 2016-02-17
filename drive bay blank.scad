@@ -32,7 +32,7 @@ screwHoleCenterHeight=4.5; //distance between the center of each screw hole and 
  * the width across corners of a metrix hex nut is twice the
  * basic screw diameter.
  */
-hexNutWidth=7; //This variable contains the "width across corners" measurement. Actually 6mm, but set to 7mm as they were too small.
+hexNutWidth=7; //This variable contains the "width across corners" measurement. Actually 6mm per spec, but set to 7mm as the printed part did not accommodate an M3 nut.
 hexNutHeight=2;
 M3ScrewClearance=3.30;
 interiorHeight=screwHoleCenterHeight+(hexNutWidth/2*sin(60))*2+thickness; //distance between the top and bottom of the part inside the PC case
