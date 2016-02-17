@@ -46,7 +46,10 @@ module partWithoutHoles() {
     translate([0,thickness,0])
     linear_extrude(thickness) { //Gussets
         polygon([[0,0],[0,width/2],[width/2,0]]);
-        polygon([[width,0],[width,width/2],[width/2,0]]);
+    }
+    translate([0,thickness,0])
+    linear_extrude(thickness) { //Gussets
+        polygon([[width,0],[width/2,0],[width,width/2]]);
     }
     }
 }
