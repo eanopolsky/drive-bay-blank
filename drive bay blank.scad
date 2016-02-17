@@ -43,9 +43,10 @@ module partWithoutHoles() {
         linear_extrude(height) polygon([[0,0],[0,depth],[thickness,depth],[thickness,thickness],[width-thickness,thickness],[width-thickness,depth],[width,depth],[width,0]]); //Main part body.
         rotate([0,-90,0]) translate([0,0,-width]) linear_extrude(height=width) polygon([[0,0],[0,depth],[       interiorHeight,depth],[interiorHeight,thickness+height-interiorHeight],[height,thickness],[height,0]]); //Trims interior height to optimize build time.
     }
-    linear_extrude(thickness) { //Triangular front panel braces.
-        translate([thickness,thickness]) polygon([[0,0],[0,2*thickness],[2*thickness,0]]);
-        translate([-thickness,thickness]) polygon([[width,0],[width,2*thickness],[width-2*thickness,0]]);
+    translate([0,thickness,0])
+    linear_extrude(thickness) { //Gussets
+        polygon([[0,0],[0,width/2],[width/2,0]]);
+        polygon([[width,0],[width,width/2],[width/2,0]]);
     }
     }
 }
@@ -83,22 +84,23 @@ partWithHoles();
 //Two copies:
 /*
 partWithHoles();
-translate([width+3*thickness,depth+3*thickness,0]) rotate([0,0,180]) partWithHoles(); 
+translate([width+width/2,depth+3*thickness,0])
+rotate([0,0,180]) partWithHoles(); 
 */
 
 //Three copies:
 /*
 translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
 translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
-translate([depth+thickness*4,thickness*4,0]) rotate([0,0,90]) partWithHoles();
+translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) partWithHoles();
 */
 
 //Four copies:
 /*
 translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
 translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
-translate([depth+thickness*4,thickness*4,0]) rotate([0,0,90]) partWithHoles();
-translate([depth+thickness*4,thickness*4+width+thickness,0]) rotate([0,0,90]) partWithHoles();
+translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) partWithHoles();
+translate([depth+thickness*4,width+thickness+width/2,0]) rotate([0,0,90]) partWithHoles();
 */
 //Prusa i3 build area.
 //color("blue") square([200,200]);
