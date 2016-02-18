@@ -3,7 +3,6 @@
 (C) 2016 Eric Anopolsky
 
 All dimensions are in mm.
-TODO: Alter dimensions to compensate for shrinkage.
 */
 
 /* Dimensional accuracy.
@@ -20,6 +19,10 @@ TODO: Alter dimensions to compensate for shrinkage.
  * parameter at this time.
  */
 
+//Revision information:
+revYear="2016";
+revMonthDayOther="0217A";
+
 //variables for part without holes
 thickness=5; //thickness of the walls of the blank
 depth=85+30+10; //depth of the blank into the PC case. 147mm per spec, but we can get away with less.
@@ -33,7 +36,7 @@ screwHoleCenterHeight=4.5; //distance between the center of each screw hole and 
  * basic screw diameter.
  */
 hexNutWidth=7; //This variable contains the "width across corners" measurement. Actually 6mm per spec, but set to 7mm as the printed part did not accommodate an M3 nut.
-hexNutHeight=2;
+hexNutHeight=2.4; //This parameter is not currently used. Spec is 2.15mm<height<2.4mm
 M3ScrewClearance=3.30;
 interiorHeight=screwHoleCenterHeight+(hexNutWidth/2*sin(60))*2+thickness; //distance between the top and bottom of the part inside the PC case
 
@@ -60,14 +63,23 @@ union() {
     //This produces a simple hex shape, resulting in 30 degree overhangs.
     //translate([0,0,-1]) linear_extrude(height=hexNutHeight+1) circle(hexNutWidth/2,$fn=6);
     
-    //This produces a hex shape with a modified side to allow for 60 degree overhangs.
-    translate([0,0,-1]) linear_extrude(height=hexNutHeight+1)
+    
+    //Height for the extrusion is set to thickness-1.5 so M3 screws with 5mm lengths will
+    //be able to reach the hex nut. The +1 along with the translation by -1 on the z axis
+    //prevent rendering errors in openscad.
+    translate([0,0,-1]) linear_extrude(height=(thickness-1.5)+1)
     union() {
         circle(hexNutWidth/2,$fn=6);
+        //This produces a hex shape with a modified side to allow for 60 degree overhangs.
         polygon([[hexNutWidth/2*cos(60),hexNutWidth/2*sin(60)],[0,2*hexNutWidth/2*sin(60)],[-hexNutWidth/2*cos(60),hexNutWidth/2*sin(60)]]);
       }
     //The hole for the M3 screw:
-    linear_extrude(height=thickness+1) circle(M3ScrewClearance/2,$fn=40);
+    linear_extrude(height=thickness+1)
+    union() {
+        circle(M3ScrewClearance/2,$fn=40);
+        //This polygon() prevents drooping on the M3 screw clearance due to overhangs.
+        polygon([[-M3ScrewClearance/2*cos(30),M3ScrewClearance/2*sin(30)],[0,M3ScrewClearance/2*sqrt(3)],[M3ScrewClearance/2*cos(30),M3ScrewClearance/2*sin(30)]]);
+    }
 }
 }
 
@@ -81,29 +93,42 @@ difference() {
 }
 }
 
+module versionedPart() {
+    difference() {
+        partWithHoles();
+        translate([1.3*thickness,1.3*thickness,thickness-2])
+        linear_extrude(height=3)
+        union() {
+            translate([0,10,0]) text(text=revYear,size=8,font="Arial:style=Bold");
+            text(text=revMonthDayOther,size=8,font="Arial:style=Bold");
+        }
+    }
+}
+
 //One copy:
-partWithHoles();
+versionedPart();
 
 //Two copies:
 /*
-partWithHoles();
+versionedPart();
 translate([width+width/2,depth+3*thickness,0])
-rotate([0,0,180]) partWithHoles(); 
+rotate([0,0,180]) versionedPart(); 
 */
 
 //Three copies:
 /*
-translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
-translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
-translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) partWithHoles();
+translate([0,width,0]) rotate([0,0,-90]) versionedPart();
+translate([0,width*2+thickness,0]) rotate([0,0,-90]) versionedPart();
+translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) versionedPart();
 */
 
 //Four copies:
 /*
-translate([0,width,0]) rotate([0,0,-90]) partWithHoles();
-translate([0,width*2+thickness,0]) rotate([0,0,-90]) partWithHoles();
-translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) partWithHoles();
-translate([depth+thickness*4,width+thickness+width/2,0]) rotate([0,0,90]) partWithHoles();
+translate([0,width,0]) rotate([0,0,-90]) versionedPart();
+translate([0,width*2+thickness,0]) rotate([0,0,-90]) versionedPart();
+translate([depth+thickness*4,width/2,0]) rotate([0,0,90]) versionedPart;
+translate([depth+thickness*4,width+thickness+width/2,0]) rotate([0,0,90]) versionedPart();
 */
+
 //Prusa i3 build area.
 //color("blue") square([200,200]);
