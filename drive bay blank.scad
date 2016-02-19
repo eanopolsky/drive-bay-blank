@@ -22,7 +22,7 @@ TODO: Alter dimensions to compensate for shrinkage.
 
 //Revision information:
 revYear="2016";
-revMonthDayOther="0218A";
+revMonthDayOther="0218B";
 
 //variables for part without holes
 thickness=5; //thickness of the walls of the blank
@@ -106,8 +106,26 @@ module versionedPart() {
     }
 }
 
+module partWithPowerButtonHole() {
+    difference() {
+        versionedPart();
+        
+        translate([width/2,0,thickness+8+2])
+        rotate([90,0,0])
+        translate([0,0,-(thickness+1)])
+        linear_extrude(height=thickness+2)
+        union() {
+            circle(r=8,$fn=40);
+            //rotate([0,0,45]) square([8,8]);
+            translate([-8,0]) square([16,50]);
+        }
+    }
+}
+
+partWithPowerButtonHole();
+
 //One copy:
-versionedPart();
+//versionedPart();
 
 //Two copies:
 /*
