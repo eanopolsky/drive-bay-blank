@@ -3,6 +3,7 @@
 (C) 2016 Eric Anopolsky
 
 All dimensions are in mm.
+TODO: Alter dimensions to compensate for shrinkage.
 */
 
 /* Dimensional accuracy.
@@ -21,7 +22,7 @@ All dimensions are in mm.
 
 //Revision information:
 revYear="2016";
-revMonthDayOther="0217A";
+revMonthDayOther="0218A";
 
 //variables for part without holes
 thickness=5; //thickness of the walls of the blank
@@ -96,7 +97,7 @@ difference() {
 module versionedPart() {
     difference() {
         partWithHoles();
-        translate([1.3*thickness,1.3*thickness,thickness-2])
+        translate([1.3*thickness,1.3*thickness,thickness-1])
         linear_extrude(height=3)
         union() {
             translate([0,10,0]) text(text=revYear,size=8,font="Arial:style=Bold");
