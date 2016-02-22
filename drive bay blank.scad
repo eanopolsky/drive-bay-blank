@@ -22,7 +22,7 @@ TODO: Alter dimensions to compensate for shrinkage.
 
 //Revision information:
 revYear="2016";
-revMonthDayOther="0218B";
+revMonthDayOther="0220A";
 
 //variables for part without holes
 thickness=5; //thickness of the walls of the blank
@@ -35,8 +35,13 @@ screwHoleCenterHeight=4.5; //distance between the center of each screw hole and 
 /* Per http://www.metrication.com/engineering/fastener.html
  * the width across corners of a metrix hex nut is twice the
  * basic screw diameter.
+ * hexNutWidth contains this "width across corners" measurement. With
+ * 0.4mm layer thickness, a value of 7mm here was necessary to
+ * accommodate the nut. However, with 0.2mm layer thickness, a gap of
+ * .1mm around the outside of the nut may be adequate (and is
+ * recommended on various sites for a press fit.
  */
-hexNutWidth=7; //This variable contains the "width across corners" measurement. Actually 6mm per spec, but set to 7mm as the printed part did not accommodate an M3 nut.
+hexNutWidth=6+.2;
 hexNutHeight=2.4; //This parameter is not currently used. Spec is 2.15mm<height<2.4mm
 M3ScrewClearance=3.30;
 interiorHeight=screwHoleCenterHeight+(hexNutWidth/2*sin(60))*2+thickness; //distance between the top and bottom of the part inside the PC case
